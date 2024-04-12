@@ -13,6 +13,10 @@
 #ifndef CHRONICLEC_H
 #define CHRONICLEC_H
 
+#include <stdbool.h>
+
+#define CHRONOC_VERSION "1.0.0"
+
 // < Terminal colors definitions start
 
 #define ANSI_RESET_ALL            "\x1b[0m"
@@ -29,6 +33,7 @@
 #define ANSI_COLOR_MAGENTA        "\x1b[35m"
 #define ANSI_COLOR_CYAN           "\x1b[36m"
 #define ANSI_COLOR_WHITE          "\x1b[37m"
+#define ANSI_COLOR_DARK_BLUE      "\x1b[94m"
 
 #define ANSI_BACKGROUND_BLACK     "\x1b[40m"
 #define ANSI_BACKGROUND_RED       "\x1b[41m"
@@ -40,5 +45,38 @@
 #define ANSI_BACKGROUND_WHITE     "\x1b[47m"
 
 // > Terminal colors definitions end
+
+// struct log_event;
+
+// typedef void* (*LOG_FN_CALLBACK)(struct log_event* event, void* private);
+
+enum Level
+{
+  TRACE,
+  DEBUG,
+  INFO,
+  SUCCESS,
+  WARN,
+  DANGER,
+  FATAL
+};
+
+struct event_data
+{
+  int line;
+  const char* date;
+  const char* time;
+  const char* file;
+};
+
+struct log_event
+{
+  struct event_data data;
+  int level;
+  bool quiet;
+  const char* fmt;
+  const char* file_out;
+  void* private;
+};
 
 #endif

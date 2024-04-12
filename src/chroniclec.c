@@ -28,7 +28,7 @@
 
 #include "chroniclec.h"
 
-int init()
+int initialize_logger()
 {
   return 0;
 }
