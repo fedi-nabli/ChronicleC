@@ -77,6 +77,33 @@ const char* get_style(int level)
     case TRACE:
       style = ANSI_COLOR_DARK_BLUE;
       break;
+
+    case DEBUG:
+      style = ANSI_COLOR_CYAN;
+      break;
+
+    case INFO:
+      style = ANSI_COLOR_BLUE;
+      break;
+
+    case SUCCESS:
+      style = ANSI_COLOR_GREEN;
+      break;
+    
+    case WARN:
+      style = ANSI_COLOR_YELLOW;
+      break;
+
+    case DANGER:
+      style = ANSI_COLOR_RED;
+      break;
+
+    case FATAL:
+      style = ANSI_COLOR_MAGENTA;
+      break;
+
+    default:
+      style = ANSI_COLOR_WHITE;
   }
 
   return style;
@@ -93,12 +120,11 @@ void log_log(int level, const char* file, int line, const char* file_out, void* 
   va_start(args, fmt);
   vsprintf(buf, fmt, args);
   va_end(args);
-  sprintf(buf, "\n");
   event->fmt = buf;
 
   if (!event->quiet)
   {
-    printf("%s%s %s: %s", get_style(event->level), event->data.date, event->data.time, event->fmt);
+    printf("%s%s %s in file %s on line %d: %s\n" ANSI_RESET_ALL, get_style(event->level), event->data.date, event->data.time, event->data.file, event->data.line, event->fmt);
   }
 
   if (file_out)
