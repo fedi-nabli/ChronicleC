@@ -33,6 +33,10 @@
 #include <stdlib.h>
 #include <assert.h>
 
+static const char* level_strings[] = {
+  "trace", "debug", "info", "success", "warn", "danger", "fatal"
+};
+
 void initialize_logger(struct log_event* logger, const char* file, int line, const char* file_out, bool output_to_console_and_file)
 {
   logger->data.date = __DATE__;
@@ -115,6 +119,12 @@ void log_log(int level, const char* file, int line, const char* file_out, void* 
   initialize_logger(event, file, line, file_out, file_out != NULL);
   event->level = level;
   
+  const char* level_str = NULL;
+  if (event->level >= 0 && event->level <= 6)
+  {
+    level_str = level_strings[event->level];
+  }
+  
   char buf[1024];
   va_list args;
   va_start(args, fmt);
@@ -124,7 +134,7 @@ void log_log(int level, const char* file, int line, const char* file_out, void* 
 
   if (!event->quiet)
   {
-    printf("%s%s %s in file %s on line %d: %s\n" ANSI_RESET_ALL, get_style(event->level), event->data.date, event->data.time, event->data.file, event->data.line, event->fmt);
+    printf("%s[%s] %s %s in file %s on line %d: %s\n" ANSI_RESET_ALL, get_style(event->level), level_str, event->data.date, event->data.time, event->data.file, event->data.line, event->fmt);
   }
 
   if (file_out)
@@ -145,4 +155,16 @@ void* logger_get_private(struct log_event* logger)
   }
 
   return logger->private;
+}
+
+int main()
+{
+  log_log(TRACE, "test", 2, NULL, "test", "hello %s %d", "there", 2);
+  log_log(DEBUG, "test", 2, NULL, "test", "hello %s", "there");
+  log_log(INFO, "test", 2, NULL, "test", "hello %s", "there");
+  log_log(SUCCESS, "test", 2, NULL, "test", "hello %s", "there");
+  log_log(WARN, "test", 2, NULL, "test", "hello %s", "there");
+  log_log(DANGER, "test", 2, NULL, "test", "hello %s", "there");
+  log_log(FATAL, "test", 2, NULL, "test", "hello %s", "there");
+  return 0;
 }
