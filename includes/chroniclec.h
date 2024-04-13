@@ -14,6 +14,7 @@
 #define CHRONICLEC_H
 
 #include <stdio.h>
+#include <stdarg.h>
 #include <stdbool.h>
 
 #define CHRONOC_VERSION "1.0.0"
@@ -80,5 +81,15 @@ struct log_event
   FILE* out_file;
   void* private;
 };
+
+void log_log(int level, const char* file, int line, const char* file_out, void* private, char* fmt, ...);
+
+#define log_trace(...) log_log(TRACE, __FILE__, __LINE__, NULL, __VA_ARGS__)
+#define log_debug(...) log_log(DEBUG, __FILE__, __LINE__, NULL, __VA_ARGS__)
+#define log_info(...) log_log(INFO, __FILE__, __LINE__, NULL, __VA_ARGS__)
+#define log_success(...) log_log(SUCCESS, __FILE__, __LINE__, NULL, __VA_ARGS__)
+#define log_warn(...) log_log(WARN, __FILE__, __LINE__, NULL, __VA_ARGS__)
+#define log_danger(...) log_log(DANGER, __FILE__, __LINE__, NULL, __VA_ARGS__)
+#define log_fatal(...) log_log(FATAL, __FILE__, __LINE__, NULL, __VA_ARGS__)
 
 #endif

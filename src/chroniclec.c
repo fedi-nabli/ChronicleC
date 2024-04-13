@@ -118,7 +118,7 @@ void log_log(int level, const char* file, int line, const char* file_out, void* 
   struct log_event* event = calloc(1, sizeof(struct log_event));
   initialize_logger(event, file, line, file_out, file_out != NULL);
   event->level = level;
-  
+
   const char* level_str = NULL;
   if (event->level >= 0 && event->level <= 6)
   {
@@ -155,16 +155,4 @@ void* logger_get_private(struct log_event* logger)
   }
 
   return logger->private;
-}
-
-int main()
-{
-  log_log(TRACE, "test", 2, NULL, "test", "hello %s %d", "there", 2);
-  log_log(DEBUG, "test", 2, NULL, "test", "hello %s", "there");
-  log_log(INFO, "test", 2, NULL, "test", "hello %s", "there");
-  log_log(SUCCESS, "test", 2, NULL, "test", "hello %s", "there");
-  log_log(WARN, "test", 2, NULL, "test", "hello %s", "there");
-  log_log(DANGER, "test", 2, NULL, "test", "hello %s", "there");
-  log_log(FATAL, "test", 2, NULL, "test", "hello %s", "there");
-  return 0;
 }
