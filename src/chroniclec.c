@@ -28,7 +28,84 @@
 
 #include "chroniclec.h"
 
-int initialize_logger()
+#include <stdio.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <assert.h>
+
+void initialize_logger(struct log_event* logger, const char* file, int line, const char* file_out, bool output_to_console_and_file)
 {
-  return 0;
+  logger->data.date = __DATE__;
+  logger->data.time = __TIME__;
+  logger->data.file = file;
+  logger->data.line = line;
+  logger->quiet = false;
+
+  if (file_out)
+  {
+    logger->file_out = file_out;
+    FILE* file = fopen(file_out, "a");
+    logger->out_file = file;
+
+    if (output_to_console_and_file)
+    {
+      logger->quiet = output_to_console_and_file;
+    }
+    else
+    {
+      logger->quiet = true;
+    }
+  }
+}
+
+void destruct_logger(struct log_event* logger)
+{
+  assert(logger);
+  if (logger->file_out)
+  {
+    fclose(logger->out_file);
+  }
+  free(logger);
+}
+
+const char* get_style(int level)
+{
+  const char* style = NULL;
+
+  switch (level)
+  {
+    case TRACE:
+      style = ANSI_COLOR_DARK_BLUE;
+      break;
+  }
+
+  return style;
+}
+
+void log_log(int level, const char* file, int line, const char* file_out, void* private, char* fmt, ...)
+{
+  struct log_event* event = calloc(1, sizeof(struct log_event));
+  initialize_logger(event, file, line, file_out, file_out != NULL);
+  event->level = level;
+  
+  char buf[1024];
+  va_list args;
+  va_start(args, fmt);
+  vsprintf(buf, fmt, args);
+  va_end(args);
+  sprintf(buf, "\n");
+  event->fmt = buf;
+
+  if (!event->quiet)
+  {
+    printf("%s%s %s: %s", get_style(event->level), event->data.date, event->data.time, event->fmt);
+  }
+
+  if (file_out)
+  {
+    vfprintf(event->out_file, fmt, args);
+    fprintf(event->out_file, "\n");
+  }
+  
+  destruct_logger(event);
 }

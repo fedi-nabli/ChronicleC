@@ -13,6 +13,7 @@
 #ifndef CHRONICLEC_H
 #define CHRONICLEC_H
 
+#include <stdio.h>
 #include <stdbool.h>
 
 #define CHRONOC_VERSION "1.0.0"
@@ -76,6 +77,7 @@ struct log_event
   bool quiet;
   const char* fmt;
   const char* file_out;
+  FILE* out_file;
   void* private;
 };
 
