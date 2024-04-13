@@ -135,3 +135,14 @@ void log_log(int level, const char* file, int line, const char* file_out, void* 
   
   destruct_logger(event);
 }
+
+void* logger_get_private(struct log_event* logger)
+{
+  assert(logger);
+  if (!logger->private)
+  {
+    return NULL;
+  }
+
+  return logger->private;
+}
