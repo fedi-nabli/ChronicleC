@@ -156,3 +156,8 @@ void* logger_get_private(struct log_event* logger)
 
   return logger->private;
 }
+
+int main()
+{
+  flog("log.txt", "%s", "hello world");
+}

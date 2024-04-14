@@ -92,4 +92,6 @@ void log_log(int level, const char* file, int line, const char* file_out, void* 
 #define log_danger(...) log_log(DANGER, __FILE__, __LINE__, NULL, __VA_ARGS__)
 #define log_fatal(...) log_log(FATAL, __FILE__, __LINE__, NULL, __VA_ARGS__)
 
+#define flog(file, ...) log_log(0, __FILE__, __LINE__, file, __VA_ARGS__)
+
 #endif
