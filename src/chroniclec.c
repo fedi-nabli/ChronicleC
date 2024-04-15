@@ -139,6 +139,7 @@ void log_log(int level, const char* file, int line, const char* file_out, void* 
 
   if (file_out)
   {
+    fprintf(event->out_file, "[%s], %s %s in file %s on line %d: ", level_str, event->data.date, event->data.time, event->data.file, event->data.line);
     vfprintf(event->out_file, fmt, args);
     fprintf(event->out_file, "\n");
   }
@@ -155,4 +156,15 @@ void* logger_get_private(struct log_event* logger)
   }
 
   return logger->private;
+}
+
+int main()
+{
+  flog_trace("log.txt", "%s", "hello world");
+  flog_debug("log.txt", "%s", "hello world");
+  flog_info("log.txt", "%s", "hello world");
+  flog_success("log.txt", "%s", "hello world");
+  flog_warn("log.txt", "%s", "hello world");
+  flog_danger("log.txt", "%s", "hello world");
+  flog_fatal("log.txt", "%s", "hello world");
 }

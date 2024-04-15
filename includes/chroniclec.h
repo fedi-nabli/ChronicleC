@@ -92,6 +92,12 @@ void log_log(int level, const char* file, int line, const char* file_out, void* 
 #define log_danger(...) log_log(DANGER, __FILE__, __LINE__, NULL, __VA_ARGS__)
 #define log_fatal(...) log_log(FATAL, __FILE__, __LINE__, NULL, __VA_ARGS__)
 
-#define flog(file, ...) log_log(0, __FILE__, __LINE__, file, __VA_ARGS__)
+#define flog_trace(file, ...) log_log(TRACE, __FILE__, __LINE__, file, __VA_ARGS__)
+#define flog_debug(file, ...) log_log(DEBUG, __FILE__, __LINE__, file, __VA_ARGS__)
+#define flog_info(file, ...) log_log(INFO, __FILE__, __LINE__, file, __VA_ARGS__)
+#define flog_success(file, ...) log_log(SUCCESS, __FILE__, __LINE__, file, __VA_ARGS__)
+#define flog_warn(file, ...) log_log(WARN, __FILE__, __LINE__, file, __VA_ARGS__)
+#define flog_danger(file, ...) log_log(DANGER, __FILE__, __LINE__, file, __VA_ARGS__)
+#define flog_fatal(file, ...) log_log(FATAL, __FILE__, __LINE__, file, __VA_ARGS__)
 
 #endif
