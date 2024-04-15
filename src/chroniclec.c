@@ -157,14 +157,3 @@ void* logger_get_private(struct log_event* logger)
 
   return logger->private;
 }
-
-int main()
-{
-  flog_trace("log.txt", "%s", "hello world");
-  flog_debug("log.txt", "%s", "hello world");
-  flog_info("log.txt", "%s", "hello world");
-  flog_success("log.txt", "%s", "hello world");
-  flog_warn("log.txt", "%s", "hello world");
-  flog_danger("log.txt", "%s", "hello world");
-  flog_fatal("log.txt", "%s", "hello world");
-}
